@@ -52,7 +52,8 @@ footer{max-width:1080px;margin:auto;padding:0 22px 30px;color:#a0aaae;font-size:
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 const $=s=>document.querySelector(s);
-let places=[],category="",view="list",map,markers=[],mapStarted=false,geocodeRunning=false;
+let places=[],category="",view="list",map,markers=[],mapStarted=false,geocodeRunning=false,geocache={};
+try{geocache=JSON.parse(localStorage.getItem("amoy-map-geocode-v1")||"{}")}catch(e){}
 const categories=["全部","景点","美食","咖啡","逛逛","体验","其他"];
 const colors={"景点":"#4e9a82","美食":"#e18b62","咖啡":"#9a7bb5","逛逛":"#d1a34e","体验":"#5c9db5","其他":"#89969b"};
 const xiamenBounds=L.latLngBounds([[24.34,117.88],[24.78,118.43]]);
@@ -114,7 +115,7 @@ async function geocodeMissing(){
       }else cache[p.name]=null;
     }else cache[p.name]=null;
    }catch(e){cache[p.name]=null}
-   try{localStorage.setItem(cacheKey,JSON.stringify(cache))}catch(e){}
+   geocache=cache;try{localStorage.setItem(cacheKey,JSON.stringify(cache))}catch(e){}
    if(i<pending.length-1)await sleep(1100);
   }
   const data=filtered();
@@ -123,7 +124,7 @@ async function geocodeMissing(){
    if(Number.isFinite(Number(p.lat))&&Number.isFinite(Number(p.lng)))addMarker(p,Number(p.lat),Number(p.lng),false);
    else if(cache[p.name]&&Number.isFinite(cache[p.name].lat)&&Number.isFinite(cache[p.name].lng))addMarker(p,cache[p.name].lat,cache[p.name].lng,false);
   });
-  const located=data.filter(p=>(Number.isFinite(Number(p.lat))&&Number.isFinite(Number(p.lng)))||(cache[p.name]&&Number.isFinite(cache[p.name].lat))).length;
+  const located=data.filter(p=>(Number.isFinite(Number(p.lat))&&Number.isFinite(Number(p.lng)))||(geocache[p.name]&&Number.isFinite(geocache[p.name].lat))).length;
   $("#mapNote").textContent="当前筛选 "+data.length+" 个地点，已定位 "+located+" 个；其余 "+(data.length-located)+" 个暂未能确认精确位置。地图定位结果缓存在当前浏览器中。";
   if(markers.length)map.fitBounds(L.featureGroup(markers).getBounds().pad(.15),{maxZoom:14});
  }finally{geocodeRunning=false}
