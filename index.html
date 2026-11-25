@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>厦门必去 · Amoy Map</title>
+<link rel="preconnect" href="https://unpkg.com"><link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+:root{--ink:#202b33;--muted:#7c8991;--line:#e8edf0;--sea:#dceff3;--blue:#6daab8;--paper:#fff;--sand:#f7f6f1}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+header{padding:28px max(22px,calc((100vw - 1180px)/2));background:linear-gradient(115deg,#f8fbfa,#eaf5f6);border-bottom:1px solid var(--line)}
+.kicker{font-size:11px;letter-spacing:.22em;color:#7198a1;text-transform:uppercase}h1{font-family:Georgia,"Songti SC",serif;font-weight:500;font-size:clamp(32px,5vw,48px);margin:7px 0 2px;letter-spacing:.04em}.sub{color:var(--muted);font-size:13px}
+main{max-width:1180px;margin:auto;padding:24px 22px 60px}.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:18px}
+input,select,button{font:inherit;border:1px solid var(--line);background:white;border-radius:8px;padding:9px 12px;color:var(--ink)}input{flex:1;min-width:190px}button{cursor:pointer}button.active{background:var(--ink);color:white;border-color:var(--ink)}
+.filters{display:flex;gap:7px;flex-wrap:wrap;margin:0 0 18px}.chip{border:1px solid var(--line);border-radius:30px;padding:6px 12px;background:white;color:#65747c;font-size:13px;cursor:pointer}.chip.active{background:var(--sea);border-color:#c5e0e5;color:#345f69}
+.meta{font-size:12px;color:var(--muted);margin:8px 0 14px}.layout{display:grid;grid-template-columns:1fr 1fr;gap:22px;min-height:540px}.list{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-content:start}.place{border:1px solid var(--line);border-radius:12px;padding:15px;background:white;min-height:130px}.place h3{font-size:16px;margin:4px 0 5px;font-weight:600}.place p{font-size:13px;color:#718087;margin:0}.tag{font-size:11px;color:#6795a0;background:#edf6f7;border-radius:20px;padding:3px 8px;display:inline-block}.area{font-size:11px;color:#a08d70;margin-left:6px}#map{height:540px;border-radius:14px;border:1px solid var(--line);background:var(--sand);z-index:1}.empty{padding:50px 20px;text-align:center;color:var(--muted);grid-column:1/-1;border:1px dashed var(--line);border-radius:12px}
+footer{max-width:1180px;margin:auto;padding:0 22px 30px;color:#a0aaae;font-size:12px}
+@media(max-width:760px){.layout{grid-template-columns:1fr}.list{grid-template-columns:1fr 1fr}#map{height:420px}.toolbar{gap:7px}}@media(max-width:430px){.list{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header><div class="kicker">A LITTLE GUIDE TO XIAMEN</div><h1>厦门必去</h1><div class="sub">沿着海风，慢慢认识这座城市。 · AMOY TRAVEL ATLAS</div></header>
+<main>
+<div class="toolbar"><input id="search" placeholder="搜索地点、关键词……"><select id="area"><option value="">全部区域</option></select><button id="listBtn" class="active">列表</button><button id="mapBtn">地图</button></div>
+<div class="filters" id="filters"></div><div class="meta" id="count">正在读取地点…</div>
+<div class="layout"><section class="list" id="list"></section><div id="map"></div></div>
+</main><footer>AMOY MAP · 个人旅行收藏 · 地图数据 © OpenStreetMap</footer>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const $=s=>document.querySelector(s);let places=[],category="",view="list",map,markers=[];
+const categories=["全部","景点","美食","咖啡","逛街","文化","住宿","其他"];
+function initMap(){map=L.map('map').setView([24.48,118.12],11);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap'}).addTo(map)}
+function render(){const q=$('#search').value.trim().toLowerCase(),a=$('#area').value;const data=places.filter(p=>(!category||category==="全部"||p.category===category)&&(!a||p.area===a)&&(!q||[p.name,p.description,p.address,p.tags].join(' ').toLowerCase().includes(q)));$('#count').textContent='收录 '+data.length+' 个地点';$('#list').innerHTML=data.length?data.map(p=>'<article class="place"><span class="tag">'+esc(p.category||'其他')+'</span><span class="area">'+esc(p.area||'厦门')+'</span><h3>'+esc(p.name)+'</h3><p>'+esc(p.description||p.address||'')+'</p></article>').join(''):'<div class="empty">还没有符合条件的地点</div>';markers.forEach(m=>map.removeLayer(m));markers=[];data.filter(p=>Number.isFinite(+p.lat)&&Number.isFinite(+p.lng)).forEach(p=>markers.push(L.marker([+p.lat,+p.lng]).addTo(map).bindPopup('<b>'+esc(p.name)+'</b><br>'+esc(p.description||''))));if(markers.length&&view==='map')map.fitBounds(L.featureGroup(markers).getBounds().pad(.15));}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function setView(v){view=v;$('#listBtn').classList.toggle('active',v==='list');$('#mapBtn').classList.toggle('active',v==='map');$('#list').style.display=v==='list'?'grid':'none';$('#map').style.display=v==='map'?'block':'none';if(v==='map')setTimeout(()=>map.invalidateSize(),80)}
+$('#filters').innerHTML=categories.map(c=>'<button class="chip '+(c==='全部'?'active':'')+'" data-c="'+c+'">'+c+'</button>').join('');
+$('#filters').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;category=b.dataset.c;$('#filters').querySelectorAll('button').forEach(x=>x.classList.toggle('active',x===b));render()});
+$('#search').addEventListener('input',render);$('#area').addEventListener('change',render);$('#listBtn').onclick=()=>setView('list');$('#mapBtn').onclick=()=>setView('map');
+initMap();fetch('./places.json').then(r=>{if(!r.ok)throw Error('地点数据暂不可用');return r.json()}).then(d=>{places=Array.isArray(d)?d:[];const areas=[...new Set(places.map(p=>p.area).filter(Boolean))].sort();$('#area').innerHTML='<option value="">全部区域</option>'+areas.map(a=>'<option>'+esc(a)+'</option>').join('');render()}).catch(()=>{$('#count').textContent='地点数据尚未配置';$('#list').innerHTML='<div class="empty">地点数据文件暂不可用，请稍后再试</div>'});
+</script></body></html>
