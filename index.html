@@ -3,37 +3,140 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>厦门必去 · Amoy Map</title>
-<link rel="preconnect" href="https://unpkg.com"><link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="preconnect" href="https://unpkg.com">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
-:root{--ink:#202b33;--muted:#7c8991;--line:#e8edf0;--sea:#dceff3;--blue:#6daab8;--paper:#fff;--sand:#f7f6f1}
-*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
-header{padding:28px max(22px,calc((100vw - 1180px)/2));background:linear-gradient(115deg,#f8fbfa,#eaf5f6);border-bottom:1px solid var(--line)}
-.kicker{font-size:11px;letter-spacing:.22em;color:#7198a1;text-transform:uppercase}h1{font-family:Georgia,"Songti SC",serif;font-weight:500;font-size:clamp(32px,5vw,48px);margin:7px 0 2px;letter-spacing:.04em}.sub{color:var(--muted);font-size:13px}
-main{max-width:1180px;margin:auto;padding:24px 22px 60px}.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:18px}
-input,select,button{font:inherit;border:1px solid var(--line);background:white;border-radius:8px;padding:9px 12px;color:var(--ink)}input{flex:1;min-width:190px}button{cursor:pointer}button.active{background:var(--ink);color:white;border-color:var(--ink)}
-.filters{display:flex;gap:7px;flex-wrap:wrap;margin:0 0 18px}.chip{border:1px solid var(--line);border-radius:30px;padding:6px 12px;background:white;color:#65747c;font-size:13px;cursor:pointer}.chip.active{background:var(--sea);border-color:#c5e0e5;color:#345f69}
-.meta{font-size:12px;color:var(--muted);margin:8px 0 14px}.layout{display:grid;grid-template-columns:1fr 1fr;gap:22px;min-height:540px}.list{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-content:start}.place{border:1px solid var(--line);border-radius:12px;padding:15px;background:white;min-height:130px}.place h3{font-size:16px;margin:4px 0 5px;font-weight:600}.place p{font-size:13px;color:#718087;margin:0}.tag{font-size:11px;color:#6795a0;background:#edf6f7;border-radius:20px;padding:3px 8px;display:inline-block}.area{font-size:11px;color:#a08d70;margin-left:6px}#map{height:540px;border-radius:14px;border:1px solid var(--line);background:var(--sand);z-index:1}.empty{padding:50px 20px;text-align:center;color:var(--muted);grid-column:1/-1;border:1px dashed var(--line);border-radius:12px}
-footer{max-width:1180px;margin:auto;padding:0 22px 30px;color:#a0aaae;font-size:12px}
-@media(max-width:760px){.layout{grid-template-columns:1fr}.list{grid-template-columns:1fr 1fr}#map{height:420px}.toolbar{gap:7px}}@media(max-width:430px){.list{grid-template-columns:1fr}}
+:root{--ink:#202b33;--muted:#7c8991;--line:#e8edf0;--sea:#dceff3;--blue:#6daab8;--paper:#fff;--sand:#f7f8f6}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+header{padding:30px max(22px,calc((100vw - 1080px)/2));background:linear-gradient(115deg,#f8fbfa,#eaf5f6);border-bottom:1px solid var(--line)}
+.kicker{font-size:11px;letter-spacing:.22em;color:#7198a1;text-transform:uppercase}h1{font-family:Georgia,"Songti SC",serif;font-weight:500;font-size:clamp(32px,5vw,46px);margin:7px 0 2px;letter-spacing:.04em}.sub{color:var(--muted);font-size:13px}
+main{max-width:1080px;margin:auto;padding:24px 22px 60px}.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:18px}
+input,select,button{font:inherit;border:1px solid var(--line);background:white;border-radius:9px;padding:9px 12px;color:var(--ink)}input{flex:1;min-width:190px}button{cursor:pointer}button.active{background:var(--ink);color:white;border-color:var(--ink)}
+.view-switch{display:flex;gap:6px;margin-left:auto}.view-switch button{min-width:72px}
+.filters{display:flex;gap:7px;flex-wrap:wrap;margin:0 0 16px}.chip{border:1px solid var(--line);border-radius:30px;padding:6px 12px;background:white;color:#65747c;font-size:13px;cursor:pointer}.chip.active{background:var(--sea);border-color:#c5e0e5;color:#345f69}
+.meta{font-size:12px;color:var(--muted);margin:8px 0 14px}
+.list{display:flex;flex-direction:column;border-top:1px solid var(--line)}
+.place{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px 22px;align-items:start;padding:18px 8px;border-bottom:1px solid var(--line);background:white}
+.place-main{min-width:0}.place h3{font-size:17px;margin:0 0 4px;font-weight:600;letter-spacing:.01em}.place p{font-size:13px;color:#68777e;margin:6px 0 0;max-width:760px}
+.place-meta{display:flex;gap:7px;align-items:center;flex-wrap:wrap}.type{font-size:11px;padding:3px 9px;border-radius:20px;background:#edf5f5;color:#477783}.area{font-size:12px;color:#9a8c78}
+.tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}.tag{font-size:11px;color:#74838a;background:#f4f6f6;border-radius:5px;padding:2px 7px}
+.address{font-size:12px;color:#8a969b;margin-top:7px}.empty{padding:54px 20px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:12px}
+#map{height:min(72vh,720px);min-height:480px;border-radius:15px;border:1px solid var(--line);background:var(--sand);z-index:1}
+.map-legend{display:flex;gap:14px;flex-wrap:wrap;margin:12px 0 8px}.legend-item{display:flex;align-items:center;gap:6px;font-size:12px;color:#68777e}.legend-dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+.leaflet-div-icon{background:transparent;border:0}.map-dot{width:17px;height:17px;border:2.5px solid white;border-radius:50%;box-shadow:0 1px 7px #24343b55}
+.leaflet-tooltip.place-tooltip{border:1px solid #e6ecee;border-radius:11px;box-shadow:0 5px 24px #23333b20;padding:11px 13px;white-space:normal;min-width:190px;max-width:270px;color:var(--ink);background:#fff}
+.tooltip-title{font-size:14px;font-weight:650;margin-bottom:4px}.tooltip-meta{font-size:11px;color:#819096;margin-bottom:5px}.tooltip-desc{font-size:12px;line-height:1.5;color:#526168}.tooltip-tags{font-size:10px;color:#72939a;margin-top:6px}
+.map-note{font-size:12px;color:var(--muted);margin-top:10px}
+footer{max-width:1080px;margin:auto;padding:0 22px 30px;color:#a0aaae;font-size:12px}
+@media(max-width:650px){header{padding-top:24px;padding-bottom:24px}main{padding:18px 15px 42px}.view-switch{margin-left:0}.toolbar{gap:7px}.place{padding:15px 3px;grid-template-columns:1fr}.place h3{font-size:16px}#map{height:68vh;min-height:430px}}
 </style>
 </head>
 <body>
 <header><div class="kicker">A LITTLE GUIDE TO XIAMEN</div><h1>厦门必去</h1><div class="sub">沿着海风，慢慢认识这座城市。 · AMOY TRAVEL ATLAS</div></header>
 <main>
-<div class="toolbar"><input id="search" placeholder="搜索地点、关键词……"><select id="area"><option value="">全部区域</option></select><button id="listBtn" class="active">列表</button><button id="mapBtn">地图</button></div>
-<div class="filters" id="filters"></div><div class="meta" id="count">正在读取地点…</div>
-<div class="layout"><section class="list" id="list"></section><div id="map"></div></div>
-</main><footer>AMOY MAP · 个人旅行收藏 · 地图数据 © OpenStreetMap</footer>
+  <div class="toolbar">
+    <input id="search" placeholder="搜索地点、关键词……">
+    <select id="area"><option value="">全部区域</option></select>
+    <div class="view-switch"><button id="listBtn" class="active">列表</button><button id="mapBtn">地图</button></div>
+  </div>
+  <div class="filters" id="filters"></div>
+  <div class="meta" id="count">正在读取地点…</div>
+  <section class="list" id="list"></section>
+  <section id="mapPanel" hidden>
+    <div class="map-legend" id="legend"></div>
+    <div id="map"></div>
+    <div class="map-note" id="mapNote">地图标记优先使用地点坐标；未能精确定位的地点不会被伪造坐标。</div>
+  </section>
+</main>
+<footer>AMOY MAP · 个人旅行收藏 · 地图数据 © OpenStreetMap</footer>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-const $=s=>document.querySelector(s);let places=[],category="",view="list",map,markers=[];
-const categories=["全部","景点","美食","咖啡","逛街","文化","体验","住宿","其他"];
-function initMap(){map=L.map('map').setView([24.48,118.12],11);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap'}).addTo(map)}
-function render(){const q=$('#search').value.trim().toLowerCase(),a=$('#area').value;const data=places.filter(p=>(!category||category==="全部"||p.category===category)&&(!a||p.area===a)&&(!q||[p.name,p.description,p.address,p.tags].join(' ').toLowerCase().includes(q)));$('#count').textContent='收录 '+data.length+' 个地点';$('#list').innerHTML=data.length?data.map(p=>'<article class="place"><span class="tag">'+esc(p.category||'其他')+'</span><span class="area">'+esc(p.area||'厦门')+'</span><h3>'+esc(p.name)+'</h3><p>'+esc(p.description||p.address||'')+'</p></article>').join(''):'<div class="empty">还没有符合条件的地点</div>';markers.forEach(m=>map.removeLayer(m));markers=[];data.filter(p=>Number.isFinite(+p.lat)&&Number.isFinite(+p.lng)).forEach(p=>markers.push(L.marker([+p.lat,+p.lng]).addTo(map).bindPopup('<b>'+esc(p.name)+'</b><br>'+esc(p.description||''))));if(markers.length&&view==='map')map.fitBounds(L.featureGroup(markers).getBounds().pad(.15));}
-function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function setView(v){view=v;$('#listBtn').classList.toggle('active',v==='list');$('#mapBtn').classList.toggle('active',v==='map');$('#list').style.display=v==='list'?'grid':'none';$('#map').style.display=v==='map'?'block':'none';if(v==='map')setTimeout(()=>map.invalidateSize(),80)}
-$('#filters').innerHTML=categories.map(c=>'<button class="chip '+(c==='全部'?'active':'')+'" data-c="'+c+'">'+c+'</button>').join('');
-$('#filters').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;category=b.dataset.c;$('#filters').querySelectorAll('button').forEach(x=>x.classList.toggle('active',x===b));render()});
-$('#search').addEventListener('input',render);$('#area').addEventListener('change',render);$('#listBtn').onclick=()=>setView('list');$('#mapBtn').onclick=()=>setView('map');
-initMap();fetch('./places.json').then(r=>{if(!r.ok)throw Error('地点数据暂不可用');return r.json()}).then(d=>{places=Array.isArray(d)?d:[];const areas=[...new Set(places.map(p=>p.area).filter(Boolean))].sort();$('#area').innerHTML='<option value="">全部区域</option>'+areas.map(a=>'<option>'+esc(a)+'</option>').join('');render()}).catch(()=>{$('#count').textContent='地点数据尚未配置';$('#list').innerHTML='<div class="empty">地点数据文件暂不可用，请稍后再试</div>'});
+const $=s=>document.querySelector(s);
+let places=[],category="",view="list",map,markers=[],mapStarted=false,geocodeRunning=false;
+const categories=["全部","景点","美食","咖啡","逛逛","体验","其他"];
+const colors={"景点":"#4e9a82","美食":"#e18b62","咖啡":"#9a7bb5","逛逛":"#d1a34e","体验":"#5c9db5","其他":"#89969b"};
+const xiamenBounds=L.latLngBounds([[24.34,117.88],[24.78,118.43]]);
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function tagsOf(p){return Array.isArray(p.tags)?p.tags:(p.tags?String(p.tags).split(/[，,、]/):[])}
+function filtered(){const q=$("#search").value.trim().toLowerCase(),a=$("#area").value;return places.filter(p=>(!category||category==="全部"||p.category===category)&&(!a||p.area===a)&&(!q||[p.name,p.description,p.address,tagsOf(p).join(" ")].join(" ").toLowerCase().includes(q)))}
+function renderList(data){
+  $("#list").innerHTML=data.length?data.map(p=>'<article class="place"><div class="place-main"><h3>'+esc(p.name)+'</h3><div class="place-meta"><span class="type">'+esc(p.category||"其他")+'</span><span class="area">'+esc(p.area||"厦门")+'</span></div><p>'+esc(p.description||"")+'</p><div class="tags">'+tagsOf(p).map(t=>'<span class="tag"># '+esc(t)+'</span>').join("")+'</div><div class="address">'+(p.address? "位置："+esc(p.address):"")+'</div></div></article>').join(""):'<div class="empty">还没有符合条件的地点</div>';
+}
+function render(){
+ const data=filtered();$("#count").textContent="收录 "+data.length+" 个地点";
+ if(view==="list")renderList(data);else renderMarkers(data);
+}
+function setView(v){
+ view=v;$("#listBtn").classList.toggle("active",v==="list");$("#mapBtn").classList.toggle("active",v==="map");
+ $("#list").hidden=v!=="list";$("#mapPanel").hidden=v!=="map";
+ if(v==="map"){if(!mapStarted)initMap();setTimeout(()=>map.invalidateSize(),80);renderMarkers(filtered());if(!geocodeRunning)geocodeMissing();}
+}
+function initMap(){
+ map=L.map("map",{minZoom:10,maxZoom:18,maxBounds:xiamenBounds,maxBoundsViscosity:1,zoomSnap:.5}).fitBounds(xiamenBounds);
+ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{attribution:'© OpenStreetMap contributors',maxZoom:19}).addTo(map);
+ mapStarted=true;
+}
+function tooltipHtml(p,approx=false){
+ return '<div class="tooltip-title">'+esc(p.name)+'</div><div class="tooltip-meta">'+esc(p.category||"其他")+' · '+esc(p.area||"厦门")+(approx?" · 片区示意":"")+'</div><div class="tooltip-desc">'+esc(p.description||p.address||"")+'</div>'+(tagsOf(p).length?'<div class="tooltip-tags">'+tagsOf(p).slice(0,5).map(esc).join(" · ")+'</div>':"");
+}
+function addMarker(p,lat,lng,approx=false){
+ const color=colors[p.category]||colors["其他"];
+ const icon=L.divIcon({className:"",html:'<div class="map-dot" style="background:'+color+';'+(approx?'outline:2px dashed '+color+';outline-offset:2px;':'')+'"></div>',iconSize:[19,19],iconAnchor:[9,9]});
+ const marker=L.marker([lat,lng],{icon}).addTo(map);
+ marker.bindTooltip(tooltipHtml(p,approx),{direction:"top",offset:[0,-9],opacity:1,sticky:true,className:"place-tooltip"});
+ markers.push(marker);
+}
+function renderMarkers(data){
+ if(!mapStarted)return;
+ markers.forEach(m=>map.removeLayer(m));markers=[];
+ data.forEach(p=>{if(Number.isFinite(Number(p.lat))&&Number.isFinite(Number(p.lng)))addMarker(p,Number(p.lat),Number(p.lng),false);});
+ const located=data.filter(p=>Number.isFinite(Number(p.lat))&&Number.isFinite(Number(p.lng))).length;
+ $("#mapNote").textContent="当前筛选 "+data.length+" 个地点，已有精确坐标 "+located+" 个。尚未定位的地点会在地图加载时尝试查询；无法确认位置的不会被放到虚构坐标上。";
+ if(markers.length){const group=L.featureGroup(markers);map.fitBounds(group.getBounds().pad(.15),{maxZoom:14});}
+}
+function sleep(ms){return new Promise(resolve=>setTimeout(resolve,ms))}
+async function geocodeMissing(){
+ if(geocodeRunning)return;geocodeRunning=true;
+ try{
+  const cacheKey="amoy-map-geocode-v1";
+  let cache={};try{cache=JSON.parse(localStorage.getItem(cacheKey)||"{}")}catch(e){}
+  let pending=places.filter(p=>!(Number.isFinite(Number(p.lat))&&Number.isFinite(Number(p.lng)))&&!cache[p.name]&&p.name!=="随机放映·特别电影放映");
+  for(let i=0;i<pending.length;i++){
+   const p=pending[i];
+   const q=[p.name,p.address,p.area,"厦门市 福建省 中国"].filter(Boolean).join(" ");
+   try{
+    const url="https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&accept-language=zh-CN&q="+encodeURIComponent(q);
+    const res=await fetch(url);const result=await res.json();
+    if(result&&result[0]){
+      const item=result[0],display=String(item.display_name||"");
+      if(display.includes("厦门")||/Xiamen/i.test(display)){
+       cache[p.name]={lat:Number(item.lat),lng:Number(item.lon),display};
+      }else cache[p.name]=null;
+    }else cache[p.name]=null;
+   }catch(e){cache[p.name]=null}
+   try{localStorage.setItem(cacheKey,JSON.stringify(cache))}catch(e){}
+   if(i<pending.length-1)await sleep(1100);
+  }
+  const data=filtered();
+  markers.forEach(m=>map.removeLayer(m));markers=[];
+  data.forEach(p=>{
+   if(Number.isFinite(Number(p.lat))&&Number.isFinite(Number(p.lng)))addMarker(p,Number(p.lat),Number(p.lng),false);
+   else if(cache[p.name]&&Number.isFinite(cache[p.name].lat)&&Number.isFinite(cache[p.name].lng))addMarker(p,cache[p.name].lat,cache[p.name].lng,false);
+  });
+  const located=data.filter(p=>(Number.isFinite(Number(p.lat))&&Number.isFinite(Number(p.lng)))||(cache[p.name]&&Number.isFinite(cache[p.name].lat))).length;
+  $("#mapNote").textContent="当前筛选 "+data.length+" 个地点，已定位 "+located+" 个；其余 "+(data.length-located)+" 个暂未能确认精确位置。地图定位结果缓存在当前浏览器中。";
+  if(markers.length)map.fitBounds(L.featureGroup(markers).getBounds().pad(.15),{maxZoom:14});
+ }finally{geocodeRunning=false}
+}
+$("#filters").innerHTML=categories.map(c=>'<button class="chip '+(c==="全部"?"active":"")+'" data-c="'+c+'">'+c+'</button>').join("");
+$("#filters").addEventListener("click",e=>{const b=e.target.closest("button[data-c]");if(!b)return;category=b.dataset.c;$("#filters").querySelectorAll("button").forEach(x=>x.classList.toggle("active",x===b));render()});
+$("#search").addEventListener("input",render);$("#area").addEventListener("change",render);
+$("#listBtn").onclick=()=>setView("list");$("#mapBtn").onclick=()=>setView("map");
+$("#legend").innerHTML=categories.filter(c=>c!=="全部").map(c=>'<span class="legend-item"><i class="legend-dot" style="background:'+colors[c]+'"></i>'+c+'</span>').join("");
+fetch("./places.json").then(r=>{if(!r.ok)throw Error("地点数据暂不可用");return r.json()}).then(d=>{
+ places=Array.isArray(d)?d:[];
+ const areas=[...new Set(places.map(p=>p.area).filter(Boolean))].sort();
+ $("#area").innerHTML='<option value="">全部区域</option>'+areas.map(a=>'<option value="'+esc(a)+'">'+esc(a)+'</option>').join("");
+ render();
+}).catch(()=>{$("#count").textContent="地点数据暂不可用";$("#list").innerHTML='<div class="empty">地点数据文件暂不可用，请稍后再试</div>'});
 </script></body></html>
