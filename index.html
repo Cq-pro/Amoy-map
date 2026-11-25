@@ -27,7 +27,7 @@ footer{max-width:1180px;margin:auto;padding:0 22px 30px;color:#a0aaae;font-size:
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 const $=s=>document.querySelector(s);let places=[],category="",view="list",map,markers=[];
-const categories=["全部","景点","美食","咖啡","逛街","文化","住宿","其他"];
+const categories=["全部","景点","美食","咖啡","逛街","文化","体验","住宿","其他"];
 function initMap(){map=L.map('map').setView([24.48,118.12],11);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap'}).addTo(map)}
 function render(){const q=$('#search').value.trim().toLowerCase(),a=$('#area').value;const data=places.filter(p=>(!category||category==="全部"||p.category===category)&&(!a||p.area===a)&&(!q||[p.name,p.description,p.address,p.tags].join(' ').toLowerCase().includes(q)));$('#count').textContent='收录 '+data.length+' 个地点';$('#list').innerHTML=data.length?data.map(p=>'<article class="place"><span class="tag">'+esc(p.category||'其他')+'</span><span class="area">'+esc(p.area||'厦门')+'</span><h3>'+esc(p.name)+'</h3><p>'+esc(p.description||p.address||'')+'</p></article>').join(''):'<div class="empty">还没有符合条件的地点</div>';markers.forEach(m=>map.removeLayer(m));markers=[];data.filter(p=>Number.isFinite(+p.lat)&&Number.isFinite(+p.lng)).forEach(p=>markers.push(L.marker([+p.lat,+p.lng]).addTo(map).bindPopup('<b>'+esc(p.name)+'</b><br>'+esc(p.description||''))));if(markers.length&&view==='map')map.fitBounds(L.featureGroup(markers).getBounds().pad(.15));}
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
