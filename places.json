@@ -10,7 +10,11 @@
       "建筑",
       "艺术",
       "生活方式"
-    ]
+    ],
+    "lat": 24.4657739,
+    "lng": 118.0815651,
+    "coordinate_system": "WGS84",
+    "coordinate_source": "祥和广场同址POI坐标，GCJ-02转WGS84"
   },
   {
     "name": "另一只耳艺术商店",
@@ -22,7 +26,11 @@
       "艺术商店",
       "独立书店",
       "退化公园"
-    ]
+    ],
+    "lat": 24.4657739,
+    "lng": 118.0815651,
+    "coordinate_system": "WGS84",
+    "coordinate_source": "退化公园所在祥和广场建筑坐标，GCJ-02转WGS84"
   },
   {
     "name": "RoofRoot 风物商店",
@@ -34,7 +42,11 @@
       "风物",
       "生活方式",
       "退化公园"
-    ]
+    ],
+    "lat": 24.4657739,
+    "lng": 118.0815651,
+    "coordinate_system": "WGS84",
+    "coordinate_source": "退化公园所在祥和广场建筑坐标，GCJ-02转WGS84"
   },
   {
     "name": "Melody Lou",
@@ -47,7 +59,11 @@
       "苹果派",
       "甜品",
       "退化公园"
-    ]
+    ],
+    "lat": 24.4657739,
+    "lng": 118.0815651,
+    "coordinate_system": "WGS84",
+    "coordinate_source": "退化公园所在祥和广场建筑坐标，GCJ-02转WGS84"
   },
   {
     "name": "友生风味小吃",
@@ -341,7 +357,11 @@
       "春联",
       "寺庙体验"
     ],
-    "season": "春节前后"
+    "season": "春节前后",
+    "lat": 24.4452808,
+    "lng": 118.0921687,
+    "coordinate_system": "WGS84",
+    "coordinate_source": "南普陀寺地址POI坐标，GCJ-02转WGS84"
   },
   {
     "name": "山海健康步道·梅海花台至海边段",
@@ -484,7 +504,11 @@
       "黑珍珠",
       "鱼",
       "大红袍布丁"
-    ]
+    ],
+    "lat": 24.4825657,
+    "lng": 118.1152859,
+    "coordinate_system": "WGS84",
+    "coordinate_source": "宴遇新景中心店POI坐标，GCJ-02转WGS84"
   },
   {
     "name": "琦摩 CHIMOTO",
