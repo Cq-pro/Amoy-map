@@ -91,7 +91,11 @@
       "brunch",
       "早午餐",
       "奶酪烤茄子"
-    ]
+    ],
+    "lng": 118.1012614,
+    "lat": 24.4705755,
+    "coordinate_system": "WGS84",
+    "coordinate_source": "高德地址匹配到大洲城市花园东门（GCJ-02转WGS84；园区入口近似定位）"
   },
   {
     "name": "明月虾面",
@@ -119,7 +123,11 @@
       "gelato",
       "冰淇淋",
       "宠物友好"
-    ]
+    ],
+    "lng": 118.1216809,
+    "lat": 24.4946066,
+    "coordinate_system": "WGS84",
+    "coordinate_source": "高德地址匹配松柏路102号（GCJ-02转WGS84）"
   },
   {
     "name": "松柏公园",
@@ -146,7 +154,11 @@
     "tags": [
       "卤肉饭",
       "社区小店"
-    ]
+    ],
+    "lng": 118.1221268,
+    "lat": 24.4923197,
+    "coordinate_system": "WGS84",
+    "coordinate_source": "高德地址匹配原门牌（GCJ-02转WGS84）"
   },
   {
     "name": "土头水吧",
@@ -159,7 +171,11 @@
       "氛围感",
       "环境好",
       "集美"
-    ]
+    ],
+    "lng": 118.0990584,
+    "lat": 24.5717732,
+    "coordinate_system": "WGS84",
+    "coordinate_source": "高德地址匹配原门牌（GCJ-02转WGS84）"
   },
   {
     "name": "雧·Kitchen",
@@ -172,7 +188,11 @@
       "炖牛肉意面",
       "集美",
       "无厦同一老板"
-    ]
+    ],
+    "lng": 118.0996478,
+    "lat": 24.5715053,
+    "coordinate_system": "WGS84",
+    "coordinate_source": "高德地址匹配原门牌（GCJ-02转WGS84）"
   },
   {
     "name": "鳥居秘藏屋",
@@ -184,7 +204,11 @@
       "中古玩具",
       "漫画",
       "集美"
-    ]
+    ],
+    "lng": 118.0912798,
+    "lat": 24.5742147,
+    "coordinate_system": "WGS84",
+    "coordinate_source": "高德地址匹配岑东路17号（GCJ-02转WGS84）"
   },
   {
     "name": "山海健康步道·梅谷花台入口",
@@ -210,7 +234,11 @@
       "闽南菜",
       "酸笋炒鸭胗",
       "沙茶酱炒小管"
-    ]
+    ],
+    "lng": 118.1023474,
+    "lat": 24.4699628,
+    "coordinate_system": "WGS84",
+    "coordinate_source": "高德匹配后埭溪路105-103号，与提供门牌105-101号相邻（GCJ-02转WGS84）"
   },
   {
     "name": "鑫丰富脆鱼（思北店）",
@@ -222,7 +250,11 @@
       "脆皖鱼",
       "鸭胗",
       "思北"
-    ]
+    ],
+    "lng": 118.0770532,
+    "lat": 24.4645038,
+    "coordinate_system": "WGS84",
+    "coordinate_source": "高德地址匹配原门牌（GCJ-02转WGS84）"
   },
   {
     "name": "野草莓自由市场",
@@ -279,7 +311,11 @@
       "小章鱼",
       "厦门小吃",
       "芥末"
-    ]
+    ],
+    "lng": 118.0851532,
+    "lat": 24.4650166,
+    "coordinate_system": "WGS84",
+    "coordinate_source": "高德匹配后河路与厦禾路交叉口（GCJ-02转WGS84）"
   },
   {
     "name": "八盛屋蘸面（中华城店）",
@@ -292,7 +328,11 @@
       "拉面",
       "中华城店",
       "多家分店"
-    ]
+    ],
+    "lng": 118.0779736,
+    "lat": 24.4555586,
+    "coordinate_system": "WGS84",
+    "coordinate_source": "高德地址匹配中华城南区5层（GCJ-02转WGS84）"
   },
   {
     "name": "四七咖喱",
@@ -305,7 +345,11 @@
       "沙爹串",
       "泡菜",
       "幸福路"
-    ]
+    ],
+    "lng": 118.0724812,
+    "lat": 24.4634914,
+    "coordinate_system": "WGS84",
+    "coordinate_source": "高德地址匹配小学路90号（GCJ-02转WGS84）"
   },
   {
     "name": "tamus gelato",
@@ -317,7 +361,11 @@
       "gelato",
       "冰淇淋",
       "幸福路"
-    ]
+    ],
+    "lng": 118.0806965,
+    "lat": 24.4630203,
+    "coordinate_system": "WGS84",
+    "coordinate_source": "高德匹配幸福路110号（GCJ-02转WGS84）"
   },
   {
     "name": "蛋屋",
@@ -329,7 +377,11 @@
       "咖啡",
       "特调",
       "胡萝卜肉桂蛋糕"
-    ]
+    ],
+    "lng": 118.0834573,
+    "lat": 24.4633309,
+    "coordinate_system": "WGS84",
+    "coordinate_source": "高德匹配玄妙巷58-1号（GCJ-02转WGS84）"
   },
   {
     "name": "厚生林糖水",
@@ -365,7 +417,11 @@
       "面包",
       "简餐",
       "盐面包"
-    ]
+    ],
+    "lng": 118.0851963,
+    "lat": 24.4637943,
+    "coordinate_system": "WGS84",
+    "coordinate_source": "高德地址匹配溪岸路127号（GCJ-02转WGS84）"
   },
   {
     "name": "南普陀寺·春节领春联",
@@ -477,7 +533,11 @@
       "餐厅",
       "雧·Kitchen同一老板",
       "集美"
-    ]
+    ],
+    "lng": 118.0988473,
+    "lat": 24.5707811,
+    "coordinate_system": "WGS84",
+    "coordinate_source": "高德地址匹配祠后路4-1号大社戏台（GCJ-02转WGS84）"
   },
   {
     "name": "丹香烘焙坊（厦禾路店）",
